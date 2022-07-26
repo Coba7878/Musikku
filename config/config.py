@@ -128,6 +128,11 @@ SERVER_PLAYLIST_LIMIT = int(getenv("SERVER_PLAYLIST_LIMIT", "30"))
 # MaximuM limit for fetching playlist's track from youtube, spotify, apple links.
 PLAYLIST_FETCH_LIMIT = int(getenv("PLAYLIST_FETCH_LIMIT", "25"))
 
+# Cleanmode time after which bot will delete its old messages from chats
+CLEANMODE_DELETE_MINS = int(
+    getenv("CLEANMODE_MINS", "5")
+)  # Remember to give value in Seconds
+
 # You'll need a Pyrogram String Session for these vars. Generate String from our session generator bot @Stringdurhakabot
 STRING1 = getenv("STRING_SESSION", None)
 STRING2 = getenv("STRING_SESSION2", None)
