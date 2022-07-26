@@ -1,25 +1,22 @@
 #
-# Copyright (C) 2021-2022 by TeamYukki@Github, < https://github.com/TeamYukki >.
+# Copyright (C) 2021-2022 by kenkansaja@Github, < https://github.com/kenkansaja >.
 #
-# This file is part of < https://github.com/TeamYukki/YukkiMusicBot > project,
+# This file is part of < https://github.com/kenkansaja/Musikku > project,
 # and is released under the "GNU v3.0 License Agreement".
-# Please see < https://github.com/TeamYukki/YukkiMusicBot/blob/master/LICENSE >
+# Please see < https://github.com/kenkansaja/Musikku/blob/master/LICENSE >
 #
 # All rights reserved.
-
 import asyncio
 from datetime import datetime, timedelta
-
 from pyrogram import filters
 from pyrogram.errors import FloodWait
 from pyrogram.raw import types
-
 import config
 from config import adminlist, chatstats, clean, userstats
 from strings import get_command
-from YukkiMusic import app, userbot
-from YukkiMusic.misc import SUDOERS
-from YukkiMusic.utils.database import (get_active_chats,
+from Musikku import app, userbot
+from Musikku.misc import SUDOERS
+from Musikku.utils.database import (get_active_chats,
                                        get_authuser_names, get_client,
                                        get_particular_top,
                                        get_served_chats,
@@ -27,16 +24,14 @@ from YukkiMusic.utils.database import (get_active_chats,
                                        is_cleanmode_on, set_queries,
                                        update_particular_top,
                                        update_user_top)
-from YukkiMusic.utils.decorators.language import language
-from YukkiMusic.utils.formatters import alpha_to_int
+from Musikku.utils.decorators.language import language
+from Musikku.utils.formatters import alpha_to_int
 
 BROADCAST_COMMAND = get_command("BROADCAST_COMMAND")
 AUTO_DELETE = config.CLEANMODE_DELETE_MINS
 AUTO_SLEEP = 5
 IS_BROADCASTING = False
 cleanmode_group = 15
-
-
 @app.on_raw_update(group=cleanmode_group)
 async def clean_mode(client, update, users, chats):
     global IS_BROADCASTING
@@ -64,8 +59,6 @@ async def clean_mode(client, update, users, chats):
     }
     clean[chat_id].append(put)
     await set_queries(1)
-
-
 @app.on_message(filters.command(BROADCAST_COMMAND) & SUDOERS)
 @language
 async def braodcast_message(client, message, _):
@@ -89,9 +82,7 @@ async def braodcast_message(client, message, _):
             query = query.replace("-user", "")
         if query == "":
             return await message.reply_text(_["broad_6"])
-
     IS_BROADCASTING = True
-
     # Bot broadcast inside chats
     if "-nobot" not in message.text:
         sent = 0
@@ -131,7 +122,6 @@ async def braodcast_message(client, message, _):
             await message.reply_text(_["broad_1"].format(sent, pin))
         except:
             pass
-
     # Bot broadcasting to users
     if "-user" in message.text:
         susr = 0
@@ -158,13 +148,11 @@ async def braodcast_message(client, message, _):
             await message.reply_text(_["broad_7"].format(susr))
         except:
             pass
-
     # Bot broadcasting by assistant
     if "-assistant" in message.text:
         aw = await message.reply_text(_["broad_2"])
         text = _["broad_3"]
-        from YukkiMusic.core.userbot import assistants
-
+        from Musikku.core.userbot import assistants
         for num in assistants:
             sent = 0
             client = await get_client(num)
@@ -190,8 +178,6 @@ async def braodcast_message(client, message, _):
         except:
             pass
     IS_BROADCASTING = False
-
-
 async def auto_clean():
     while not await asyncio.sleep(AUTO_SLEEP):
         try:
@@ -270,6 +256,4 @@ async def auto_clean():
                         adminlist[chat_id].append(user_id)
         except:
             continue
-
-
 asyncio.create_task(auto_clean())
